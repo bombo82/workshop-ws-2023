@@ -15,27 +15,28 @@ export class WallService {
     }
 
     anotherBrickInTheWall(user: User, message: string, loggedInUser: User | undefined): Brick[] {
-        if (loggedInUser !== undefined) {
-            let isFriend: boolean = false;
-            for (const friend of user.getFriends()) {
-                if (friend === loggedInUser) {
-                    isFriend = true;
-                    break;
-                }
-            }
-
-            if (isFriend) {
-                let wall: Brick[] = this._wallDAO.getBricks(user);
-                const brick: Brick = new Brick(message, this._clock.now());
-                this._wallDAO.addBrick(user, brick);
-
-                wall.push(brick);
-                return wall;
-            }
-
-            throw new UsersAreNotFriendsError();
-        } else {
+        if (loggedInUser === undefined) {
             throw new UserNotLoggedInError();
         }
+
+        let isFriend: boolean = false;
+        for (const friend of user.getFriends()) {
+            if (friend === loggedInUser) {
+                isFriend = true;
+                break;
+            }
+        }
+
+        if (isFriend) {
+            let wall: Brick[] = this._wallDAO.getBricks(user);
+            const brick: Brick = new Brick(message, this._clock.now());
+            this._wallDAO.addBrick(user, brick);
+
+            wall.push(brick);
+            return wall;
+        }
+
+        throw new UsersAreNotFriendsError();
+        
     }
 }

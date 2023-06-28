@@ -16,33 +16,31 @@ public class WallService
 
     public List<Brick> AnotherBrickInTheWall(User.User user, string message, User.User? loggedInUser)
     {
-        if (loggedInUser != null)
-        {
-            bool isFriend = false;
-            foreach (src.User.User friend in user.GetFriends())
-            {
-                if (friend.Equals(loggedInUser))
-                {
-                    isFriend = true;
-                    break;
-                }
-            }
-
-            if (isFriend)
-            {
-                List<Brick> wall = _wallDao.GetBricks(user);
-                Brick brick = new Brick(message, _clock.now());
-                _wallDao.AddBrick(user, brick);
-
-                wall.Add(brick);
-                return wall;
-            }
-
-            throw new UsersAreNotFriendsException();
-        }
-        else
+        if (loggedInUser == null)
         {
             throw new UserNotLoggedInException();
         }
+
+        bool isFriend = false;
+        foreach (src.User.User friend in user.GetFriends())
+        {
+            if (friend.Equals(loggedInUser))
+            {
+                isFriend = true;
+                break;
+            }
+        }
+
+        if (isFriend)
+        {
+            List<Brick> wall = _wallDao.GetBricks(user);
+            Brick brick = new Brick(message, _clock.now());
+            _wallDao.AddBrick(user, brick);
+
+            wall.Add(brick);
+            return wall;
+        }
+
+        throw new UsersAreNotFriendsException();
     }
 }
