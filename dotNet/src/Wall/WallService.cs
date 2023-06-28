@@ -20,15 +20,17 @@ public class WallService
                     break;
                 }
             }
+
             if (isFriend)
             {
-                wall = WallDAO.FindBricksByUser(user);
+                wall = FindBricksByUser(user);
                 Brick brick = new Brick(message, DateTime.Now);
-                WallDAO.AddBrickToUser(user, brick);
+                AddBrickToUser(user, brick);
 
                 wall.Add(brick);
                 return wall;
             }
+
             throw new UsersAreNotFriendsException();
         }
         else
@@ -40,5 +42,15 @@ public class WallService
     protected virtual User.User? GetLoggedUser()
     {
         return UserSession.GetInstance().GetLoggedUser();
+    }
+
+    protected virtual List<Brick> FindBricksByUser(User.User user)
+    {
+        return WallDAO.FindBricksByUser(user);
+    }
+
+    protected virtual void AddBrickToUser(User.User user, Brick brick)
+    {
+        WallDAO.AddBrickToUser(user, brick);
     }
 }

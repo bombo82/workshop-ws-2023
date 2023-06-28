@@ -20,9 +20,9 @@ export class WallService {
             }
 
             if (isFriend) {
-                wall = WallDAO.findBricksByUser(user);
+                wall = this.findBricksByUser(user);
                 const brick: Brick = new Brick(message, new Date());
-                WallDAO.addBrickToUser(user, brick);
+                this.addBrickToUser(user, brick);
 
                 wall.push(brick);
                 return wall;
@@ -36,5 +36,13 @@ export class WallService {
 
     protected getLoggedUser(): User | undefined {
         return UserSession.getInstance().getLoggedUser();
+    }
+
+    protected findBricksByUser(user: User) {
+        return WallDAO.findBricksByUser(user);
+    }
+
+    protected addBrickToUser(user: User, brick: Brick) {
+        WallDAO.addBrickToUser(user, brick);
     }
 }

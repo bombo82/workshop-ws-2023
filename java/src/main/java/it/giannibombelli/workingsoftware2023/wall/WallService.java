@@ -23,9 +23,9 @@ public class WallService {
                 }
             }
             if (isFriend) {
-                wall = WallDAO.findBricksByUser(user);
+                wall = findBricksByUser(user);
                 Brick brick = new Brick(message, new Date());
-                WallDAO.addBrickToUser(user, brick);
+                addBrickToUser(user, brick);
 
                 wall.add(brick);
                 return wall;
@@ -38,6 +38,14 @@ public class WallService {
 
     protected User getLoggedUser() {
         return UserSession.getInstance().getLoggedUser();
+    }
+
+    protected List<Brick> findBricksByUser(User user) {
+        return WallDAO.findBricksByUser(user);
+    }
+
+    protected void addBrickToUser(User user, Brick brick) {
+        WallDAO.addBrickToUser(user, brick);
     }
 
 }
