@@ -1,16 +1,15 @@
-using src.User;
 using src.Wall;
 
-namespace SocialNetworkTest.Wall;
+namespace test.Wall;
 
 public class StubWallDAO : IWallDAO
 {
-    public List<Brick> GetBricks(User user)
+    public List<Brick> GetBricks(src.User.User user)
     {
         return new List<Brick>();
     }
 
-    public void AddBrick(User user, Brick brick)
+    public void AddBrick(src.User.User user, Brick brick)
     {
     }
 }

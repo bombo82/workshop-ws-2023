@@ -22,9 +22,9 @@ class WallServiceTest {
 
     @BeforeEach
     void setUp() {
-        final WallDAOInterface stubWallDAO = new StubWallDAO();
+        final WallDAOInterface wallDAO = new StubWallDAO();
         clock = new StubClock();
-        wallService = new WallService(stubWallDAO, clock);
+        wallService = new WallService(wallDAO, clock);
     }
 
     @Test

@@ -5,7 +5,7 @@ import {UsersAreNotFriendsError} from '../../src/Error/UsersAreNotFriendsError';
 import {Brick} from '../../src/Wall/Brick';
 import {StubWallDAO} from './stubWallDAO';
 import {WallDAOInterface} from '../../src/Wall/WallDAOInterface';
-import {StubClock} from './stubClock';
+import {StubClock} from '../Wrapper/stubClock';
 import {ClockInterface} from '../../src/Wrapper/ClockInterface';
 
 const GUEST = undefined;

@@ -2,20 +2,20 @@ namespace src.User;
 
 public class User
 {
-    private readonly List<User> friends = new();
+    private readonly List<User> _friends = new();
 
     public List<User> GetFriends()
     {
-        return friends;
+        return _friends;
     }
 
     public void AddFriend(User user)
     {
-        friends.Add(user);
+        _friends.Add(user);
     }
 
     public bool IsFriendWith(User anotherUser)
     {
-        return friends.Contains(anotherUser);
+        return _friends.Contains(anotherUser);
     }
 }

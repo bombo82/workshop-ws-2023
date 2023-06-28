@@ -1,6 +1,6 @@
-namespace SocialNetworkTest.Wall;
+namespace src.Wrapper;
 
 public interface IClock
 {
-    DateTime now();
+    DateTime Now();
 }

@@ -1,8 +1,6 @@
 package it.giannibombelli.workingsoftware2023.wall;
 
 import it.giannibombelli.workingsoftware2023.user.User;
-import it.giannibombelli.workingsoftware2023.wall.Brick;
-import it.giannibombelli.workingsoftware2023.wall.WallDAOInterface;
 
 import java.util.ArrayList;
 import java.util.List;

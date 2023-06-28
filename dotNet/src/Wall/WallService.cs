@@ -1,5 +1,5 @@
-using SocialNetworkTest.Wall;
 using src.Exception;
+using src.Wrapper;
 
 namespace src.Wall;
 
@@ -27,7 +27,7 @@ public class WallService
         }
 
         List<Brick> wall = _wallDao.GetBricks(user);
-        Brick brick = new Brick(message, _clock.now());
+        Brick brick = new Brick(message, _clock.Now());
         _wallDao.AddBrick(user, brick);
 
         wall.Add(brick);

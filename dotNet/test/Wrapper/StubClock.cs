@@ -1,8 +1,10 @@
-namespace SocialNetworkTest.Wall;
+using src.Wrapper;
+
+namespace test.Wrapper;
 
 public class StubClock : IClock
 {
-    public DateTime now()
+    public DateTime Now()
     {
         return new DateTime(0);
     }

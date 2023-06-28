@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class User {
-    private List<User> friends = new ArrayList<User>();
+    private final List<User> friends = new ArrayList<>();
 
     public List<User> getFriends() {
         return friends;

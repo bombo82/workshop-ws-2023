@@ -1,4 +1,3 @@
-using SocialNetworkTest.Wall;
 using src.Exception;
 
 namespace src.Wall;

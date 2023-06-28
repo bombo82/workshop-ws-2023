@@ -1,10 +1,9 @@
-
 namespace test.User;
 
 public class UserTest
 {
-    private static readonly src.User.User? A_FRIEND = new();
-    private static readonly src.User.User? NOT_A_FRIEND = new();
+    private static readonly src.User.User A_FRIEND = new();
+    private static readonly src.User.User NOT_A_FRIEND = new();
 
     [SetUp]
     public void Setup()

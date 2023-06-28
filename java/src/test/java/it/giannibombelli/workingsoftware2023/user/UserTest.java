@@ -2,7 +2,8 @@ package it.giannibombelli.workingsoftware2023.user;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class UserTest {
 
@@ -10,7 +11,7 @@ class UserTest {
     private static final User NOT_A_FRIEND = new User();
 
     @Test
-    void shouldInformWhenUserAreNotFriendWith(){
+    void shouldInformWhenUserAreNotFriendWith() {
         final User user = new User();
         user.addFriend(A_FRIEND);
 
@@ -18,7 +19,7 @@ class UserTest {
     }
 
     @Test
-    void shouldInformWhenUserAreFriendWith(){
+    void shouldInformWhenUserAreFriendWith() {
         final User user = new User();
         user.addFriend(A_FRIEND);
 
