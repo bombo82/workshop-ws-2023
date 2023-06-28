@@ -21,26 +21,16 @@ public class WallService
             throw new UserNotLoggedInException();
         }
 
-        bool isFriend = false;
-        foreach (src.User.User friend in user.GetFriends())
+        if (!user.IsFriendWith(loggedInUser))
         {
-            if (friend.Equals(loggedInUser))
-            {
-                isFriend = true;
-                break;
-            }
+            throw new UsersAreNotFriendsException();
         }
 
-        if (isFriend)
-        {
-            List<Brick> wall = _wallDao.GetBricks(user);
-            Brick brick = new Brick(message, _clock.now());
-            _wallDao.AddBrick(user, brick);
+        List<Brick> wall = _wallDao.GetBricks(user);
+        Brick brick = new Brick(message, _clock.now());
+        _wallDao.AddBrick(user, brick);
 
-            wall.Add(brick);
-            return wall;
-        }
-
-        throw new UsersAreNotFriendsException();
+        wall.Add(brick);
+        return wall;
     }
 }

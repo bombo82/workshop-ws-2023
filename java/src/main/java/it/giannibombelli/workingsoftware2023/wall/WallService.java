@@ -21,23 +21,16 @@ public class WallService {
         if (loggedInUser == null) {
             throw new UserNotLoggedInException();
         }
-        
-        boolean isFriend = false;
-        for (User friend : user.getFriends()) {
-            if (friend.equals(loggedInUser)) {
-                isFriend = true;
-                break;
-            }
+        if (!user.isFriendWith(loggedInUser)) {
+            throw new UsersAreNotFriendsException();
         }
-        if (isFriend) {
-            List<Brick> wall = wallDAO.getBricks(user);
-            Brick brick = new Brick(message, clock.now());
-            wallDAO.addBrick(user, brick);
 
-            wall.add(brick);
-            return wall;
-        }
-        throw new UsersAreNotFriendsException();
+        List<Brick> wall = wallDAO.getBricks(user);
+        Brick brick = new Brick(message, clock.now());
+        wallDAO.addBrick(user, brick);
+
+        wall.add(brick);
+        return wall;
     }
 
 }
