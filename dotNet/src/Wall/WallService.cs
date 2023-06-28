@@ -1,20 +1,18 @@
 using src.Exception;
-using src.User;
 
 namespace src.Wall;
 
 public class WallService
 {
-    public List<Brick> AnotherBrickInTheWall(src.User.User user, string message)
+    public List<Brick> AnotherBrickInTheWall(User.User user, string message, User.User? loggedInUser)
     {
         List<Brick> wall = new List<Brick>();
-        src.User.User? loggedUser = GetLoggedUser();
         bool isFriend = false;
-        if (loggedUser != null)
+        if (loggedInUser != null)
         {
             foreach (src.User.User friend in user.GetFriends())
             {
-                if (friend.Equals(loggedUser))
+                if (friend.Equals(loggedInUser))
                 {
                     isFriend = true;
                     break;
@@ -37,11 +35,6 @@ public class WallService
         {
             throw new UserNotLoggedInException();
         }
-    }
-
-    protected virtual User.User? GetLoggedUser()
-    {
-        return UserSession.GetInstance().GetLoggedUser();
     }
 
     protected virtual List<Brick> FindBricksByUser(User.User user)

@@ -11,13 +11,12 @@ import java.util.List;
 
 public class WallService {
 
-    public List<Brick> anotherBrickInTheWall(User user, String message) throws UserNotLoggedInException {
+    public List<Brick> anotherBrickInTheWall(User user, String message, User loggedInUser) throws UserNotLoggedInException {
         List<Brick> wall = new ArrayList<>();
-        User loggedUser = getLoggedUser();
         boolean isFriend = false;
-        if (loggedUser != null) {
+        if (loggedInUser != null) {
             for (User friend : user.getFriends()) {
-                if (friend.equals(loggedUser)) {
+                if (friend.equals(loggedInUser)) {
                     isFriend = true;
                     break;
                 }
@@ -34,10 +33,6 @@ public class WallService {
         } else {
             throw new UserNotLoggedInException();
         }
-    }
-
-    protected User getLoggedUser() {
-        return UserSession.getInstance().getLoggedUser();
     }
 
     protected List<Brick> findBricksByUser(User user) {

@@ -21,7 +21,6 @@ class WallServiceTest {
 
     private WallService wallService;
 
-    private User loggedInUser;
     private Date creationDate;
 
     @BeforeEach
@@ -31,46 +30,36 @@ class WallServiceTest {
 
     @Test
     void shouldThrowAnExceptionWhenUserIsNotLoggedIn() {
-        loggedInUser = GUEST;
-
-        assertThrows(UserNotLoggedInException.class, () -> wallService.anotherBrickInTheWall(null, ""));
+        assertThrows(UserNotLoggedInException.class, () -> wallService.anotherBrickInTheWall(null, "", GUEST));
     }
 
     @Test
     void shouldThrowAnExceptionWhenUserAreNotFriendWith() {
-        loggedInUser = REGISTERED_USER;
-
-        assertThrows(UsersAreNotFriendsException.class, () -> wallService.anotherBrickInTheWall(new User(), ""));
+        assertThrows(UsersAreNotFriendsException.class, () -> wallService.anotherBrickInTheWall(new User(), "", REGISTERED_USER));
     }
 
     @Test
     void shouldAppendNewBrickToFriendWallAndReturnTheUpdatedWall() {
-        loggedInUser = REGISTERED_USER;
         final User user = new User();
         user.addFriend(REGISTERED_USER);
 
-        final List<Brick> wall = wallService.anotherBrickInTheWall(user, "");
+        final List<Brick> wall = wallService.anotherBrickInTheWall(user, "", REGISTERED_USER);
 
         assertEquals(1, wall.size());
     }
 
     @Test
     void appendedBrickShouldBeTheRightOne() {
-        loggedInUser = REGISTERED_USER;
         creationDate = new Date();
         final User user = new User();
         user.addFriend(REGISTERED_USER);
 
-        final List<Brick> wall = wallService.anotherBrickInTheWall(user, "");
+        final List<Brick> wall = wallService.anotherBrickInTheWall(user, "", REGISTERED_USER);
 
         assertEquals(new Brick("", creationDate), wall.get(0));
     }
 
     private class TestableWallService extends WallService {
-        @Override
-        protected User getLoggedUser() {
-            return loggedInUser;
-        }
 
         @Override
         protected List<Brick> findBricksByUser(User user) {

@@ -3,17 +3,15 @@ import {WallDAO} from './WallDAO';
 import {UsersAreNotFriendsError} from '../Error/UsersAreNotFriendsError';
 import {UserNotLoggedInError} from '../Error/UserNotLoggedInError';
 import {User} from '../User/User';
-import {UserSession} from '../User/UserSession';
 
 export class WallService {
-    anotherBrickInTheWall(user: User, message: string): Brick[] {
+    anotherBrickInTheWall(user: User, message: string, loggedInUser: User | undefined): Brick[] {
         let wall: Brick[] = [];
-        const loggedUser = this.getLoggedUser();
         let isFriend: boolean = false;
 
-        if (loggedUser !== undefined) {
+        if (loggedInUser !== undefined) {
             for (const friend of user.getFriends()) {
-                if (friend === loggedUser) {
+                if (friend === loggedInUser) {
                     isFriend = true;
                     break;
                 }
@@ -33,11 +31,6 @@ export class WallService {
             throw new UserNotLoggedInError();
         }
     }
-
-    protected getLoggedUser(): User | undefined {
-        return UserSession.getInstance().getLoggedUser();
-    }
-
     protected findBricksByUser(user: User) {
         return WallDAO.findBricksByUser(user);
     }
