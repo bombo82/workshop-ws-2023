@@ -11,6 +11,7 @@ describe('Wall Service test', () => {
     let wallService: TestableWallService;
 
     let loggedInUser: User | undefined;
+    let creationDate: Date;
 
     beforeEach(() => {
         wallService = new TestableWallService();
@@ -38,6 +39,17 @@ describe('Wall Service test', () => {
         expect(wall.length).toEqual(1);
     });
 
+    it('appended brick should be the right one', () => {
+        loggedInUser = REGISTERED_USER;
+        creationDate = new Date();
+        let user = new User();
+        user.addFriend(REGISTERED_USER);
+
+        let wall = wallService.anotherBrickInTheWall(user, '');
+
+        expect(wall[0]).toEqual(new Brick('', creationDate));
+    });
+
     class TestableWallService extends WallService {
 
         protected getLoggedUser(): User | undefined {
@@ -49,6 +61,10 @@ describe('Wall Service test', () => {
         }
 
         protected addBrickToUser(user: User, brick: Brick) {
+        }
+
+        protected getCreationDate(): Date {
+            return creationDate;
         }
     }
 });

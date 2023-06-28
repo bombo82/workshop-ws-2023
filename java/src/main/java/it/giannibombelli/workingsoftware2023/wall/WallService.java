@@ -24,7 +24,7 @@ public class WallService {
             }
             if (isFriend) {
                 wall = findBricksByUser(user);
-                Brick brick = new Brick(message, new Date());
+                Brick brick = new Brick(message, getCreationDate());
                 addBrickToUser(user, brick);
 
                 wall.add(brick);
@@ -46,6 +46,10 @@ public class WallService {
 
     protected void addBrickToUser(User user, Brick brick) {
         WallDAO.addBrickToUser(user, brick);
+    }
+
+    protected Date getCreationDate() {
+        return new Date();
     }
 
 }

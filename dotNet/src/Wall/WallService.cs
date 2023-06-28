@@ -24,7 +24,7 @@ public class WallService
             if (isFriend)
             {
                 wall = FindBricksByUser(user);
-                Brick brick = new Brick(message, DateTime.Now);
+                Brick brick = new Brick(message, CreationDate());
                 AddBrickToUser(user, brick);
 
                 wall.Add(brick);
@@ -52,5 +52,10 @@ public class WallService
     protected virtual void AddBrickToUser(User.User user, Brick brick)
     {
         WallDAO.AddBrickToUser(user, brick);
+    }
+
+    protected virtual DateTime CreationDate()
+    {
+        return DateTime.Now;
     }
 }

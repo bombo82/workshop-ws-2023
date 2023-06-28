@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -21,6 +22,7 @@ class WallServiceTest {
     private WallService wallService;
 
     private User loggedInUser;
+    private Date creationDate;
 
     @BeforeEach
     void setUp() {
@@ -52,6 +54,18 @@ class WallServiceTest {
         assertEquals(1, wall.size());
     }
 
+    @Test
+    void appendedBrickShouldBeTheRightOne() {
+        loggedInUser = REGISTERED_USER;
+        creationDate = new Date();
+        final User user = new User();
+        user.addFriend(REGISTERED_USER);
+
+        final List<Brick> wall = wallService.anotherBrickInTheWall(user, "");
+
+        assertEquals(new Brick("", creationDate), wall.get(0));
+    }
+
     private class TestableWallService extends WallService {
         @Override
         protected User getLoggedUser() {
@@ -65,6 +79,11 @@ class WallServiceTest {
 
         @Override
         protected void addBrickToUser(User user, Brick brick) {
+        }
+
+        @Override
+        protected Date getCreationDate() {
+            return creationDate;
         }
     }
 }

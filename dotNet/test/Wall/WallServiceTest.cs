@@ -12,6 +12,7 @@ public class Tests
     private WallService _wallService;
 
     private static User? _loggedInUser;
+    private static DateTime _creationDate;
 
     [SetUp]
     public void Setup()
@@ -47,6 +48,19 @@ public class Tests
         Assert.That(wall.Count, Is.EqualTo(1));
     }
 
+    [Test]
+    public void appended_Brick_Should_Be_The_Right_One()
+    {
+        _loggedInUser = RegisteredUser;
+        _creationDate = DateTime.Now;
+        User user = new User();
+        user.AddFriend(RegisteredUser);
+
+        List<Brick> wall = _wallService.AnotherBrickInTheWall(user, "");
+
+        Assert.That(wall[0], Is.EqualTo(new Brick("", _creationDate)));
+    }
+
     private class TestableWallService : WallService
     {
         protected override User? GetLoggedUser()
@@ -61,6 +75,11 @@ public class Tests
 
         protected override void AddBrickToUser(User user, Brick brick)
         {
+        }
+
+        protected override DateTime CreationDate()
+        {
+            return _creationDate;
         }
     }
 }

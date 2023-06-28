@@ -21,7 +21,7 @@ export class WallService {
 
             if (isFriend) {
                 wall = this.findBricksByUser(user);
-                const brick: Brick = new Brick(message, new Date());
+                const brick: Brick = new Brick(message, this.getCreationDate());
                 this.addBrickToUser(user, brick);
 
                 wall.push(brick);
@@ -44,5 +44,9 @@ export class WallService {
 
     protected addBrickToUser(user: User, brick: Brick) {
         WallDAO.addBrickToUser(user, brick);
+    }
+
+    protected getCreationDate() {
+        return new Date();
     }
 }
