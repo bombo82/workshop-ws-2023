@@ -2,7 +2,7 @@ namespace src.User;
 
 public class User
 {
-    private readonly List<User> friends = new List<User>();
+    private readonly List<User> friends = new();
 
     public List<User> GetFriends()
     {
@@ -12,5 +12,10 @@ public class User
     public void AddFriend(User user)
     {
         friends.Add(user);
+    }
+
+    public bool IsFriendWith(User anotherUser)
+    {
+        return friends.Contains(anotherUser);
     }
 }

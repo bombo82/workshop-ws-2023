@@ -8,4 +8,8 @@ export class User {
     public addFriend(user: User): void {
         this.friends.push(user);
     }
+
+    isFriendWith(anotherUser: User): boolean {
+        return !!this.friends.find(friend => friend === anotherUser);
+    }
 }
