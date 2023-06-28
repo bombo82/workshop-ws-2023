@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "author": "Gianni Bombelli <bombo82@giannibombelli.it>",
-  "license": "ISC",
+  "license": "GPL-3.0",
   "scripts": {
     "test": "jest"
   },
