@@ -12,13 +12,13 @@ const GUEST = undefined;
 const REGISTERED_USER = new User();
 
 describe('Wall Service test', () => {
-    let wallService: TestableWallService;
+    let wallService: WallService;
     let clock: ClockInterface;
 
     beforeEach(() => {
         let wallDAO: WallDAOInterface = new StubWallDAO();
         clock = new StubClock();
-        wallService = new TestableWallService(wallDAO, clock);
+        wallService = new WallService(wallDAO, clock);
     });
 
     it('should throw an error when user is not logged in', () => {
@@ -46,10 +46,4 @@ describe('Wall Service test', () => {
 
         expect(wall[0]).toEqual(new Brick('', clock.now()));
     });
-
-    class TestableWallService extends WallService {
-        constructor(wallDAO: WallDAOInterface, clock: ClockInterface) {
-            super(wallDAO, clock);
-        }
-    }
 });

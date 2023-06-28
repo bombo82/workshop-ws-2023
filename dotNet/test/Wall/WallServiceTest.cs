@@ -17,7 +17,7 @@ public class Tests
     {
         IWallDAO wallDao = new StubWallDAO();
         clock = new StubClock();
-        _wallService = new TestableWallService(wallDao, clock);
+        _wallService = new WallService(wallDao, clock);
     }
 
     [Test]
@@ -53,12 +53,5 @@ public class Tests
         List<Brick> wall = _wallService.AnotherBrickInTheWall(user, "", RegisteredUser);
 
         Assert.That(wall[0], Is.EqualTo(new Brick("", clock.now())));
-    }
-
-    private class TestableWallService : WallService
-    {
-        public TestableWallService(IWallDAO wallDao, IClock clock) : base(wallDao, clock)
-        {
-        }
     }
 }

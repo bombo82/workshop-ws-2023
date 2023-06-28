@@ -4,11 +4,10 @@ import it.giannibombelli.workingsoftware2023.exception.UserNotLoggedInException;
 import it.giannibombelli.workingsoftware2023.exception.UsersAreNotFriendsException;
 import it.giannibombelli.workingsoftware2023.user.User;
 import it.giannibombelli.workingsoftware2023.wrapper.Clock;
+import it.giannibombelli.workingsoftware2023.wrapper.StubClock;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import it.giannibombelli.workingsoftware2023.wrapper.StubClock;
 
-import java.util.Date;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -25,7 +24,7 @@ class WallServiceTest {
     void setUp() {
         final WallDAOInterface stubWallDAO = new StubWallDAO();
         clock = new StubClock();
-        wallService = new TestableWallService(stubWallDAO, clock);
+        wallService = new WallService(stubWallDAO, clock);
     }
 
     @Test
@@ -56,12 +55,5 @@ class WallServiceTest {
         final List<Brick> wall = wallService.anotherBrickInTheWall(user, "", REGISTERED_USER);
 
         assertEquals(new Brick("", clock.now()), wall.get(0));
-    }
-
-    private class TestableWallService extends WallService {
-
-        public TestableWallService(WallDAOInterface wallDAO, Clock clock) {
-            super(wallDAO, clock);
-        }
     }
 }

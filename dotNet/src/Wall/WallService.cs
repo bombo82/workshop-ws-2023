@@ -8,7 +8,7 @@ public class WallService
     private readonly IWallDAO _wallDao;
     private readonly IClock _clock;
 
-    protected WallService(IWallDAO wallDao, IClock clock)
+    public WallService(IWallDAO wallDao, IClock clock)
     {
         _wallDao = wallDao;
         _clock = clock;
