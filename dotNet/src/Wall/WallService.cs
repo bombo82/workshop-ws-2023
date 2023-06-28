@@ -16,10 +16,9 @@ public class WallService
 
     public List<Brick> AnotherBrickInTheWall(User.User user, string message, User.User? loggedInUser)
     {
-        List<Brick> wall = new List<Brick>();
-        bool isFriend = false;
         if (loggedInUser != null)
         {
+            bool isFriend = false;
             foreach (src.User.User friend in user.GetFriends())
             {
                 if (friend.Equals(loggedInUser))
@@ -31,7 +30,7 @@ public class WallService
 
             if (isFriend)
             {
-                wall = _wallDao.GetBricks(user);
+                List<Brick> wall = _wallDao.GetBricks(user);
                 Brick brick = new Brick(message, _clock.now());
                 _wallDao.AddBrick(user, brick);
 

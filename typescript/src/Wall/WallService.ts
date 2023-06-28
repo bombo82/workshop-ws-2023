@@ -15,10 +15,8 @@ export class WallService {
     }
 
     anotherBrickInTheWall(user: User, message: string, loggedInUser: User | undefined): Brick[] {
-        let wall: Brick[] = [];
-        let isFriend: boolean = false;
-
         if (loggedInUser !== undefined) {
+            let isFriend: boolean = false;
             for (const friend of user.getFriends()) {
                 if (friend === loggedInUser) {
                     isFriend = true;
@@ -27,7 +25,7 @@ export class WallService {
             }
 
             if (isFriend) {
-                wall = this._wallDAO.getBricks(user);
+                let wall: Brick[] = this._wallDAO.getBricks(user);
                 const brick: Brick = new Brick(message, this._clock.now());
                 this._wallDAO.addBrick(user, brick);
 

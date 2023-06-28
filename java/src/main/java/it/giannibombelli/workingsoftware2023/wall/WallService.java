@@ -5,7 +5,6 @@ import it.giannibombelli.workingsoftware2023.exception.UsersAreNotFriendsExcepti
 import it.giannibombelli.workingsoftware2023.user.User;
 import it.giannibombelli.workingsoftware2023.wrapper.Clock;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class WallService {
@@ -18,10 +17,9 @@ public class WallService {
         this.clock = clock;
     }
 
-    public List<Brick> anotherBrickInTheWall(User user, String message, User loggedInUser) throws UserNotLoggedInException {
-        List<Brick> wall = new ArrayList<>();
-        boolean isFriend = false;
+    public List<Brick> anotherBrickInTheWall(User user, String message, User loggedInUser) {
         if (loggedInUser != null) {
+            boolean isFriend = false;
             for (User friend : user.getFriends()) {
                 if (friend.equals(loggedInUser)) {
                     isFriend = true;
@@ -29,7 +27,7 @@ public class WallService {
                 }
             }
             if (isFriend) {
-                wall = wallDAO.getBricks(user);
+                List<Brick> wall = wallDAO.getBricks(user);
                 Brick brick = new Brick(message, clock.now());
                 wallDAO.addBrick(user, brick);
 
