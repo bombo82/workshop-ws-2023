@@ -13,7 +13,7 @@ public class WallService {
 
     public List<Brick> anotherBrickInTheWall(User user, String message) throws UserNotLoggedInException {
         List<Brick> wall = new ArrayList<>();
-        User loggedUser = UserSession.getInstance().getLoggedUser();
+        User loggedUser = getLoggedUser();
         boolean isFriend = false;
         if (loggedUser != null) {
             for (User friend : user.getFriends()) {
@@ -34,6 +34,10 @@ public class WallService {
         } else {
             throw new UserNotLoggedInException();
         }
+    }
+
+    protected User getLoggedUser() {
+        return UserSession.getInstance().getLoggedUser();
     }
 
 }

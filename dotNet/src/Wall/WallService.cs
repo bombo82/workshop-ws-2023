@@ -8,7 +8,7 @@ public class WallService
     public List<Brick> AnotherBrickInTheWall(src.User.User user, string message)
     {
         List<Brick> wall = new List<Brick>();
-        src.User.User? loggedUser = UserSession.GetInstance().GetLoggedUser();
+        src.User.User? loggedUser = GetLoggedUser();
         bool isFriend = false;
         if (loggedUser != null)
         {
@@ -35,5 +35,10 @@ public class WallService
         {
             throw new UserNotLoggedInException();
         }
+    }
+
+    protected virtual User.User? GetLoggedUser()
+    {
+        return UserSession.GetInstance().GetLoggedUser();
     }
 }
