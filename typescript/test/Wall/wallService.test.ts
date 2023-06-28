@@ -5,18 +5,20 @@ import {UsersAreNotFriendsError} from '../../src/Error/UsersAreNotFriendsError';
 import {Brick} from '../../src/Wall/Brick';
 import {StubWallDAO} from './stubWallDAO';
 import {WallDAOInterface} from '../../src/Wall/WallDAOInterface';
+import {StubClock} from './stubClock';
+import {ClockInterface} from '../../src/Wrapper/ClockInterface';
 
 const GUEST = undefined;
 const REGISTERED_USER = new User();
 
 describe('Wall Service test', () => {
     let wallService: TestableWallService;
-
-    let creationDate: Date;
+    let clock: ClockInterface;
 
     beforeEach(() => {
         let wallDAO: WallDAOInterface = new StubWallDAO();
-        wallService = new TestableWallService(wallDAO);
+        clock = new StubClock();
+        wallService = new TestableWallService(wallDAO, clock);
     });
 
     it('should throw an error when user is not logged in', () => {
@@ -37,22 +39,17 @@ describe('Wall Service test', () => {
     });
 
     it('appended brick should be the right one', () => {
-        creationDate = new Date();
         let user = new User();
         user.addFriend(REGISTERED_USER);
 
         let wall = wallService.anotherBrickInTheWall(user, '', REGISTERED_USER);
 
-        expect(wall[0]).toEqual(new Brick('', creationDate));
+        expect(wall[0]).toEqual(new Brick('', clock.now()));
     });
 
     class TestableWallService extends WallService {
-        constructor(wallDAO: WallDAOInterface) {
-            super(wallDAO);
-        }
-
-        protected getCreationDate(): Date {
-            return creationDate;
+        constructor(wallDAO: WallDAOInterface, clock: ClockInterface) {
+            super(wallDAO, clock);
         }
     }
 });

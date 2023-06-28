@@ -1,13 +1,12 @@
-package it.giannibombelli.workingsoftware2023;
+package it.giannibombelli.workingsoftware2023.wall;
 
 import it.giannibombelli.workingsoftware2023.exception.UserNotLoggedInException;
 import it.giannibombelli.workingsoftware2023.exception.UsersAreNotFriendsException;
 import it.giannibombelli.workingsoftware2023.user.User;
-import it.giannibombelli.workingsoftware2023.wall.Brick;
-import it.giannibombelli.workingsoftware2023.wall.WallDAOInterface;
-import it.giannibombelli.workingsoftware2023.wall.WallService;
+import it.giannibombelli.workingsoftware2023.wrapper.Clock;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import it.giannibombelli.workingsoftware2023.wrapper.StubClock;
 
 import java.util.Date;
 import java.util.List;
@@ -20,13 +19,13 @@ class WallServiceTest {
     private static final User REGISTERED_USER = new User();
 
     private WallService wallService;
-
-    private Date creationDate;
+    private Clock clock;
 
     @BeforeEach
     void setUp() {
         final WallDAOInterface stubWallDAO = new StubWallDAO();
-        wallService = new TestableWallService(stubWallDAO);
+        clock = new StubClock();
+        wallService = new TestableWallService(stubWallDAO, clock);
     }
 
     @Test
@@ -51,24 +50,18 @@ class WallServiceTest {
 
     @Test
     void appendedBrickShouldBeTheRightOne() {
-        creationDate = new Date();
         final User user = new User();
         user.addFriend(REGISTERED_USER);
 
         final List<Brick> wall = wallService.anotherBrickInTheWall(user, "", REGISTERED_USER);
 
-        assertEquals(new Brick("", creationDate), wall.get(0));
+        assertEquals(new Brick("", clock.now()), wall.get(0));
     }
 
     private class TestableWallService extends WallService {
 
-        public TestableWallService(WallDAOInterface wallDAO) {
-            super(wallDAO);
-        }
-
-        @Override
-        protected Date getCreationDate() {
-            return creationDate;
+        public TestableWallService(WallDAOInterface wallDAO, Clock clock) {
+            super(wallDAO, clock);
         }
     }
 }

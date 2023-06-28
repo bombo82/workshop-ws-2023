@@ -3,12 +3,15 @@ import {UsersAreNotFriendsError} from '../Error/UsersAreNotFriendsError';
 import {UserNotLoggedInError} from '../Error/UserNotLoggedInError';
 import {User} from '../User/User';
 import {WallDAOInterface} from './WallDAOInterface';
+import {ClockInterface} from '../Wrapper/ClockInterface';
 
 export class WallService {
     private _wallDAO: WallDAOInterface;
+    private _clock: ClockInterface;
 
-    constructor(wallDAO: WallDAOInterface) {
+    constructor(wallDAO: WallDAOInterface, clock: ClockInterface) {
         this._wallDAO = wallDAO;
+        this._clock = clock;
     }
 
     anotherBrickInTheWall(user: User, message: string, loggedInUser: User | undefined): Brick[] {
@@ -25,7 +28,7 @@ export class WallService {
 
             if (isFriend) {
                 wall = this._wallDAO.getBricks(user);
-                const brick: Brick = new Brick(message, this.getCreationDate());
+                const brick: Brick = new Brick(message, this._clock.now());
                 this._wallDAO.addBrick(user, brick);
 
                 wall.push(brick);
@@ -36,9 +39,5 @@ export class WallService {
         } else {
             throw new UserNotLoggedInError();
         }
-    }
-
-    protected getCreationDate() {
-        return new Date();
     }
 }

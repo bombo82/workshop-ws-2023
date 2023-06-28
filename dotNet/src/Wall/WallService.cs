@@ -6,10 +6,12 @@ namespace src.Wall;
 public class WallService
 {
     private readonly IWallDAO _wallDao;
+    private readonly IClock _clock;
 
-    protected WallService(IWallDAO wallDao)
+    protected WallService(IWallDAO wallDao, IClock clock)
     {
         _wallDao = wallDao;
+        _clock = clock;
     }
 
     public List<Brick> AnotherBrickInTheWall(User.User user, string message, User.User? loggedInUser)
@@ -30,7 +32,7 @@ public class WallService
             if (isFriend)
             {
                 wall = _wallDao.GetBricks(user);
-                Brick brick = new Brick(message, CreationDate());
+                Brick brick = new Brick(message, _clock.now());
                 _wallDao.AddBrick(user, brick);
 
                 wall.Add(brick);
@@ -43,10 +45,5 @@ public class WallService
         {
             throw new UserNotLoggedInException();
         }
-    }
-
-    protected virtual DateTime CreationDate()
-    {
-        return DateTime.Now;
     }
 }

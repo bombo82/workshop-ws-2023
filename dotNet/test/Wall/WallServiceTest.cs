@@ -10,14 +10,14 @@ public class Tests
     private static readonly User RegisteredUser = new User();
 
     private WallService _wallService;
-
-    private static DateTime _creationDate;
+    private IClock clock;
 
     [SetUp]
     public void Setup()
     {
         IWallDAO wallDao = new StubWallDAO();
-        _wallService = new TestableWallService(wallDao);
+        clock = new StubClock();
+        _wallService = new TestableWallService(wallDao, clock);
     }
 
     [Test]
@@ -47,24 +47,18 @@ public class Tests
     [Test]
     public void appended_Brick_Should_Be_The_Right_One()
     {
-        _creationDate = DateTime.Now;
         User user = new User();
         user.AddFriend(RegisteredUser);
 
         List<Brick> wall = _wallService.AnotherBrickInTheWall(user, "", RegisteredUser);
 
-        Assert.That(wall[0], Is.EqualTo(new Brick("", _creationDate)));
+        Assert.That(wall[0], Is.EqualTo(new Brick("", clock.now())));
     }
 
     private class TestableWallService : WallService
     {
-        public TestableWallService(IWallDAO wallDao) : base(wallDao)
+        public TestableWallService(IWallDAO wallDao, IClock clock) : base(wallDao, clock)
         {
-        }
-
-        protected override DateTime CreationDate()
-        {
-            return _creationDate;
         }
     }
 }

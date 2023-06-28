@@ -1,4 +1,4 @@
-package it.giannibombelli.workingsoftware2023;
+package it.giannibombelli.workingsoftware2023.wall;
 
 import it.giannibombelli.workingsoftware2023.user.User;
 import it.giannibombelli.workingsoftware2023.wall.Brick;
