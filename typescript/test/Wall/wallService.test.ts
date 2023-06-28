@@ -3,10 +3,10 @@ import {User} from '../../src/User/User';
 import {UserNotLoggedInError} from '../../src/Error/UserNotLoggedInError';
 import {UsersAreNotFriendsError} from '../../src/Error/UsersAreNotFriendsError';
 import {Brick} from '../../src/Wall/Brick';
-import {StubWallDAO} from './stubWallDAO';
 import {WallDAOInterface} from '../../src/Wall/WallDAOInterface';
 import {StubClock} from '../Wrapper/stubClock';
 import {ClockInterface} from '../../src/Wrapper/ClockInterface';
+import {InMemoryWallDAO} from './inMemoryWallDAO';
 
 const GUEST = undefined;
 const REGISTERED_USER = new User();
@@ -16,7 +16,7 @@ describe('Wall Service test', () => {
     let clock: ClockInterface;
 
     beforeEach(() => {
-        let wallDAO: WallDAOInterface = new StubWallDAO();
+        let wallDAO: WallDAOInterface = new InMemoryWallDAO();
         clock = new StubClock();
         wallService = new WallService(wallDAO, clock);
     });

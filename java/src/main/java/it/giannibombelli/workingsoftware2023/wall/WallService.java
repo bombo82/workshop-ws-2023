@@ -25,12 +25,9 @@ public class WallService {
             throw new UsersAreNotFriendsException();
         }
 
-        List<Brick> wall = wallDAO.getBricks(user);
         Brick brick = new Brick(message, clock.now());
         wallDAO.addBrick(user, brick);
 
-        wall.add(brick);
-        return wall;
+        return wallDAO.getBricks(user);
     }
-
 }

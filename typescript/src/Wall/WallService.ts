@@ -22,11 +22,9 @@ export class WallService {
             throw new UsersAreNotFriendsError();
         }
 
-        let wall: Brick[] = this._wallDAO.getBricks(user);
         const brick: Brick = new Brick(message, this._clock.now());
         this._wallDAO.addBrick(user, brick);
 
-        wall.push(brick);
-        return wall;
+        return this._wallDAO.getBricks(user).slice();
     }
 }

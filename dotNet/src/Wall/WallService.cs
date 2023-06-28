@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using src.Exception;
 using src.Wrapper;
 
@@ -26,11 +27,9 @@ public class WallService
             throw new UsersAreNotFriendsException();
         }
 
-        List<Brick> wall = _wallDao.GetBricks(user);
         Brick brick = new Brick(message, _clock.Now());
         _wallDao.AddBrick(user, brick);
 
-        wall.Add(brick);
-        return wall;
+        return _wallDao.GetBricks(user).ToList();
     }
 }

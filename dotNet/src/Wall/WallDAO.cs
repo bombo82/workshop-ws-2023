@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using src.Exception;
 
 namespace src.Wall;
@@ -16,9 +17,9 @@ public class WallDAO : IWallDAO
         throw new NotTestableCallException("WallDAO should not be invoked on an unit test.");
     }
 
-    public List<Brick> GetBricks(User.User user)
+    public ImmutableArray<Brick> GetBricks(User.User user)
     {
-        return FindBricksByUser(user);
+        return ImmutableArray.ToImmutableArray(FindBricksByUser(user));
     }
 
     public void AddBrick(User.User user, Brick brick)

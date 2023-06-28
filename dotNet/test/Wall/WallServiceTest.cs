@@ -16,7 +16,7 @@ public class Tests
     [SetUp]
     public void Setup()
     {
-        IWallDAO wallDao = new StubWallDAO();
+        IWallDAO wallDao = new InMemoryWallDAO();
         clock = new StubClock();
         _wallService = new WallService(wallDao, clock);
     }
