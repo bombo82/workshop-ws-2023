@@ -3,13 +3,18 @@ package it.giannibombelli.workingsoftware2023.wall;
 import it.giannibombelli.workingsoftware2023.exception.UserNotLoggedInException;
 import it.giannibombelli.workingsoftware2023.exception.UsersAreNotFriendsException;
 import it.giannibombelli.workingsoftware2023.user.User;
-import it.giannibombelli.workingsoftware2023.user.UserSession;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class WallService {
+
+    private final WallDAOInterface wallDAO;
+
+    public WallService(WallDAOInterface wallDAO) {
+        this.wallDAO = wallDAO;
+    }
 
     public List<Brick> anotherBrickInTheWall(User user, String message, User loggedInUser) throws UserNotLoggedInException {
         List<Brick> wall = new ArrayList<>();
@@ -22,9 +27,9 @@ public class WallService {
                 }
             }
             if (isFriend) {
-                wall = findBricksByUser(user);
+                wall = wallDAO.getBricks(user);
                 Brick brick = new Brick(message, getCreationDate());
-                addBrickToUser(user, brick);
+                wallDAO.addBrick(user, brick);
 
                 wall.add(brick);
                 return wall;
@@ -33,14 +38,6 @@ public class WallService {
         } else {
             throw new UserNotLoggedInException();
         }
-    }
-
-    protected List<Brick> findBricksByUser(User user) {
-        return WallDAO.findBricksByUser(user);
-    }
-
-    protected void addBrickToUser(User user, Brick brick) {
-        WallDAO.addBrickToUser(user, brick);
     }
 
     protected Date getCreationDate() {

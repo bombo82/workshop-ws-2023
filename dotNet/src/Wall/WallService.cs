@@ -1,9 +1,17 @@
+using SocialNetworkTest.Wall;
 using src.Exception;
 
 namespace src.Wall;
 
 public class WallService
 {
+    private readonly IWallDAO _wallDao;
+
+    protected WallService(IWallDAO wallDao)
+    {
+        _wallDao = wallDao;
+    }
+
     public List<Brick> AnotherBrickInTheWall(User.User user, string message, User.User? loggedInUser)
     {
         List<Brick> wall = new List<Brick>();
@@ -21,9 +29,9 @@ public class WallService
 
             if (isFriend)
             {
-                wall = FindBricksByUser(user);
+                wall = _wallDao.GetBricks(user);
                 Brick brick = new Brick(message, CreationDate());
-                AddBrickToUser(user, brick);
+                _wallDao.AddBrick(user, brick);
 
                 wall.Add(brick);
                 return wall;
@@ -35,16 +43,6 @@ public class WallService
         {
             throw new UserNotLoggedInException();
         }
-    }
-
-    protected virtual List<Brick> FindBricksByUser(User.User user)
-    {
-        return WallDAO.FindBricksByUser(user);
-    }
-
-    protected virtual void AddBrickToUser(User.User user, Brick brick)
-    {
-        WallDAO.AddBrickToUser(user, brick);
     }
 
     protected virtual DateTime CreationDate()

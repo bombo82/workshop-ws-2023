@@ -4,11 +4,11 @@ import it.giannibombelli.workingsoftware2023.exception.UserNotLoggedInException;
 import it.giannibombelli.workingsoftware2023.exception.UsersAreNotFriendsException;
 import it.giannibombelli.workingsoftware2023.user.User;
 import it.giannibombelli.workingsoftware2023.wall.Brick;
+import it.giannibombelli.workingsoftware2023.wall.WallDAOInterface;
 import it.giannibombelli.workingsoftware2023.wall.WallService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -25,7 +25,8 @@ class WallServiceTest {
 
     @BeforeEach
     void setUp() {
-        wallService = new TestableWallService();
+        final WallDAOInterface stubWallDAO = new StubWallDAO();
+        wallService = new TestableWallService(stubWallDAO);
     }
 
     @Test
@@ -61,13 +62,8 @@ class WallServiceTest {
 
     private class TestableWallService extends WallService {
 
-        @Override
-        protected List<Brick> findBricksByUser(User user) {
-            return new ArrayList<>();
-        }
-
-        @Override
-        protected void addBrickToUser(User user, Brick brick) {
+        public TestableWallService(WallDAOInterface wallDAO) {
+            super(wallDAO);
         }
 
         @Override

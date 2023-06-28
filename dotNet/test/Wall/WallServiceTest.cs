@@ -16,7 +16,8 @@ public class Tests
     [SetUp]
     public void Setup()
     {
-        _wallService = new TestableWallService();
+        IWallDAO wallDao = new StubWallDAO();
+        _wallService = new TestableWallService(wallDao);
     }
 
     [Test]
@@ -28,7 +29,8 @@ public class Tests
     [Test]
     public void should_Throw_An_Exception_When_User_Are_Not_Friend_With()
     {
-        Assert.Throws<UsersAreNotFriendsException>(() => _wallService.AnotherBrickInTheWall(new User(), "", RegisteredUser));
+        Assert.Throws<UsersAreNotFriendsException>(() =>
+            _wallService.AnotherBrickInTheWall(new User(), "", RegisteredUser));
     }
 
     [Test]
@@ -56,12 +58,7 @@ public class Tests
 
     private class TestableWallService : WallService
     {
-        protected override List<Brick> FindBricksByUser(User user)
-        {
-            return new List<Brick>();
-        }
-
-        protected override void AddBrickToUser(User user, Brick brick)
+        public TestableWallService(IWallDAO wallDao) : base(wallDao)
         {
         }
 

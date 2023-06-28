@@ -1,10 +1,16 @@
 import {Brick} from './Brick';
-import {WallDAO} from './WallDAO';
 import {UsersAreNotFriendsError} from '../Error/UsersAreNotFriendsError';
 import {UserNotLoggedInError} from '../Error/UserNotLoggedInError';
 import {User} from '../User/User';
+import {WallDAOInterface} from './WallDAOInterface';
 
 export class WallService {
+    private _wallDAO: WallDAOInterface;
+
+    constructor(wallDAO: WallDAOInterface) {
+        this._wallDAO = wallDAO;
+    }
+
     anotherBrickInTheWall(user: User, message: string, loggedInUser: User | undefined): Brick[] {
         let wall: Brick[] = [];
         let isFriend: boolean = false;
@@ -18,9 +24,9 @@ export class WallService {
             }
 
             if (isFriend) {
-                wall = this.findBricksByUser(user);
+                wall = this._wallDAO.getBricks(user);
                 const brick: Brick = new Brick(message, this.getCreationDate());
-                this.addBrickToUser(user, brick);
+                this._wallDAO.addBrick(user, brick);
 
                 wall.push(brick);
                 return wall;
@@ -30,13 +36,6 @@ export class WallService {
         } else {
             throw new UserNotLoggedInError();
         }
-    }
-    protected findBricksByUser(user: User) {
-        return WallDAO.findBricksByUser(user);
-    }
-
-    protected addBrickToUser(user: User, brick: Brick) {
-        WallDAO.addBrickToUser(user, brick);
     }
 
     protected getCreationDate() {

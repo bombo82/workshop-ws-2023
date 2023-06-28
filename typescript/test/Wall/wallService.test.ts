@@ -3,6 +3,8 @@ import {User} from '../../src/User/User';
 import {UserNotLoggedInError} from '../../src/Error/UserNotLoggedInError';
 import {UsersAreNotFriendsError} from '../../src/Error/UsersAreNotFriendsError';
 import {Brick} from '../../src/Wall/Brick';
+import {StubWallDAO} from './stubWallDAO';
+import {WallDAOInterface} from '../../src/Wall/WallDAOInterface';
 
 const GUEST = undefined;
 const REGISTERED_USER = new User();
@@ -13,7 +15,8 @@ describe('Wall Service test', () => {
     let creationDate: Date;
 
     beforeEach(() => {
-        wallService = new TestableWallService();
+        let wallDAO: WallDAOInterface = new StubWallDAO();
+        wallService = new TestableWallService(wallDAO);
     });
 
     it('should throw an error when user is not logged in', () => {
@@ -44,11 +47,8 @@ describe('Wall Service test', () => {
     });
 
     class TestableWallService extends WallService {
-        protected findBricksByUser(user: User): Brick[] {
-            return [];
-        }
-
-        protected addBrickToUser(user: User, brick: Brick) {
+        constructor(wallDAO: WallDAOInterface) {
+            super(wallDAO);
         }
 
         protected getCreationDate(): Date {
