@@ -2,7 +2,7 @@ import {WallDAOInterface} from '../../src/Wall/WallDAOInterface';
 import {User} from '../../src/User/User';
 import {Brick} from '../../src/Wall/Brick';
 
-export class InMemoryWallDAO implements WallDAOInterface {
+export class FakeWallDAO implements WallDAOInterface {
     private bricks: Brick[] = [];
 
     getBricks(user: User): ReadonlyArray<Brick> {

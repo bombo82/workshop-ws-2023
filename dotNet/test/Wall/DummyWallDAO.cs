@@ -3,17 +3,15 @@ using src.Wall;
 
 namespace test.Wall;
 
-public class InMemoryWallDAO : IWallDAO
+public class DummyWallDAO : IWallDAO
 {
-    private List<Brick> _wall = new();
-
     public ImmutableArray<Brick> GetBricks(src.User.User user)
     {
-        return ImmutableArray.ToImmutableArray(_wall);
+        throw new NotImplementedException();
     }
 
     public void AddBrick(src.User.User user, Brick brick)
     {
-        _wall.Add(brick);
+        throw new NotImplementedException();
     }
 }

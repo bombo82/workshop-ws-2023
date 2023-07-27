@@ -3,47 +3,56 @@ import {User} from '../../src/User/User';
 import {UserNotLoggedInError} from '../../src/Error/UserNotLoggedInError';
 import {UsersAreNotFriendsError} from '../../src/Error/UsersAreNotFriendsError';
 import {Brick} from '../../src/Wall/Brick';
-import {WallDAOInterface} from '../../src/Wall/WallDAOInterface';
-import {StubClock} from '../Wrapper/stubClock';
-import {ClockInterface} from '../../src/Wrapper/ClockInterface';
-import {InMemoryWallDAO} from './inMemoryWallDAO';
+import {StubClock} from '../Wrapper/StubClock';
+import {FakeWallDAO} from './FakeWallDAO';
+import {DummyWallDAO} from "./DummyWallDAO";
+import {DummyClock} from "../Wrapper/DummyClock";
+import {SpyWallDAO} from "./SpyWallDAO";
 
 const GUEST = undefined;
 const REGISTERED_USER = new User();
 
 describe('Wall Service test', () => {
-    let wallService: WallService;
-    let clock: ClockInterface;
-
-    beforeEach(() => {
-        let wallDAO: WallDAOInterface = new InMemoryWallDAO();
-        clock = new StubClock();
-        wallService = new WallService(wallDAO, clock);
-    });
 
     it('should throw an error when user is not logged in', () => {
-        expect(() => wallService.anotherBrickInTheWall(new User(), '', GUEST)).toThrow(UserNotLoggedInError);
+        const wallService = new WallService(new DummyWallDAO(), new DummyClock());
+
+        expect(() =>
+            wallService.anotherBrickInTheWall(new User(), '', GUEST)
+        ).toThrow(UserNotLoggedInError);
     });
 
     it('should throw an error when user are not friend with', () => {
-        expect(() => wallService.anotherBrickInTheWall(new User(), '', REGISTERED_USER)).toThrow(UsersAreNotFriendsError);
+        const wallService = new WallService(new DummyWallDAO(), new DummyClock());
+
+        expect(() =>
+            wallService.anotherBrickInTheWall(new User(), '', REGISTERED_USER)
+        ).toThrow(UsersAreNotFriendsError);
     });
 
-    it('should append a new brick to friend wall and return the updated wall', () => {
+    it('should append a new brick to friend wall', () => {
+        const stubClock = new StubClock();
+        let spyWallDAO = new SpyWallDAO();
+        const wallService = new WallService(spyWallDAO, stubClock);
+        let user = new User();
+        user.addFriend(REGISTERED_USER);
+
+        wallService.anotherBrickInTheWall(user, '', REGISTERED_USER);
+
+        expect(spyWallDAO.userParameter).toEqual(user);
+        expect(spyWallDAO.brickParameter).toEqual(new Brick("", stubClock.now()))
+    });
+
+    it('appended brick should return the updated wall', () => {
+        const stubClock = new StubClock();
+        const wallService = new WallService(new FakeWallDAO(), stubClock);
+
         let user = new User();
         user.addFriend(REGISTERED_USER);
 
         let wall = wallService.anotherBrickInTheWall(user, '', REGISTERED_USER);
 
         expect(wall.length).toEqual(1);
-    });
-
-    it('appended brick should be the right one', () => {
-        let user = new User();
-        user.addFriend(REGISTERED_USER);
-
-        let wall = wallService.anotherBrickInTheWall(user, '', REGISTERED_USER);
-
-        expect(wall[0]).toEqual(new Brick('', clock.now()));
+        expect(wall[0]).toEqual(new Brick('', stubClock.now()));
     });
 });

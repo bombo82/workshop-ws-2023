@@ -5,7 +5,7 @@ import it.giannibombelli.workingsoftware2023.user.User;
 import java.util.ArrayList;
 import java.util.List;
 
-public class InMemoryWallDAO implements WallDAOInterface {
+public class FakeWallDAO implements WallDAOInterface {
     final ArrayList<Brick> wall = new ArrayList<>();
 
     @Override
